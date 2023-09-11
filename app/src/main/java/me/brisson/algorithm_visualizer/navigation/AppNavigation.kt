@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import me.brisson.algorithm_visualizer.ui.screen.home.HomeRoute
+import me.brisson.algorithm_visualizer.ui.screen.sort_algorithms.SortAlgorithmsRoute
 
 @Composable
 fun AppNavigation(
@@ -25,7 +26,9 @@ fun AppNavigation(
             )
         }
         composable(AppNavigationRoutes.SORT_ALGORITHMS_ROUTE) {
-            //TODO
+            SortAlgorithmsRoute(
+                onBack = { navController.navigateUp() },
+            )
         }
     }
 }

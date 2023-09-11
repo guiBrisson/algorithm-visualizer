@@ -25,7 +25,7 @@ object AppNavigationRoutes {
 class AppDestinations(private val navController: NavHostController) {
 
     fun navigateToSortAlgorithms() {
-        navController.navigate(route = AppNavigationRoutes.ALGORITHM_ROUTE)
+        navController.navigate(route = AppNavigationRoutes.SORT_ALGORITHMS_ROUTE)
     }
 
 }
