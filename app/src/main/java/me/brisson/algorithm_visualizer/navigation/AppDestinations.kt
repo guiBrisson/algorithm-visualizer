@@ -1,5 +1,7 @@
 package me.brisson.algorithm_visualizer.navigation
 
+import androidx.navigation.NavHostController
+
 object AppNavigationScreens {
     const val HOME_SCREEN = "home"
     const val SORT_ALGORITHMS_SCREEN = "sort_algorithms"
@@ -18,4 +20,12 @@ object AppNavigationRoutes {
         "${AppNavigationScreens.SORTING_SCREEN}/{${AppNavigationArgs.SORT_ALGORITHM_ID}}"
     const val SORTING_INFO_ROUTE =
         "${AppNavigationScreens.SORTING_INFO_SCREEN}/{${AppNavigationArgs.SORT_ALGORITHM_ID}}"
+}
+
+class AppDestinations(private val navController: NavHostController) {
+
+    fun navigateToSortAlgorithms() {
+        navController.navigate(route = AppNavigationRoutes.ALGORITHM_ROUTE)
+    }
+
 }

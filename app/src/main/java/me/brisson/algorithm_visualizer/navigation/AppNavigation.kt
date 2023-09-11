@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import me.brisson.algorithm_visualizer.ui.screen.home.HomeRoute
 
 @Composable
 fun AppNavigation(
@@ -19,7 +20,9 @@ fun AppNavigation(
         startDestination = startDestination
     ) {
         composable(AppNavigationRoutes.HOME_ROUTE) {
-            //TODO
+            HomeRoute(
+                onSortClick = { AppDestinations(navController).navigateToSortAlgorithms() },
+            )
         }
         composable(AppNavigationRoutes.SORT_ALGORITHMS_ROUTE) {
             //TODO
