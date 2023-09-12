@@ -6,6 +6,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -24,6 +25,7 @@ import me.brisson.algorithm_visualizer.R
 import me.brisson.algorithm_visualizer.ui.components.BarIllustration
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.stroke
+import kotlin.random.Random
 
 @Composable
 fun HomeRoute(
@@ -61,7 +63,12 @@ internal fun HomeScreen(
             GridItem(
                 title = "Sorting",
                 algorithmsAmount = 6,
-                illustration = { BarIllustration() },
+                illustration = {
+                    BarIllustration(
+                        modifier = Modifier.height(50.dp),
+                        arr = IntArray(6) { Random.nextInt(from = 15, until = 50) },
+                    )
+                },
                 onClick = onSortClick
             )
         }

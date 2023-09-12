@@ -4,7 +4,6 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -21,20 +20,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import kotlin.random.Random
 
 @Composable
 fun BarIllustration(
     modifier: Modifier = Modifier,
+    horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(4.dp),
+    arr: IntArray,
 ) {
-    val array = IntArray(6) { Random.nextInt(from = 15, until = 50) }
-
     LazyRow(
-        modifier = modifier.height(50.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier,
+        horizontalArrangement = horizontalArrangement,
         verticalAlignment = Alignment.Bottom,
     ) {
-        items(array.toTypedArray()) { i ->
+        items(arr.toTypedArray()) { i ->
             BarItem(modifier = Modifier, height = i.dp)
         }
     }

@@ -16,7 +16,7 @@ object AppNavigationArgs {
 object AppNavigationRoutes {
     const val HOME_ROUTE = AppNavigationScreens.HOME_SCREEN
     const val SORT_ALGORITHMS_ROUTE = AppNavigationScreens.SORT_ALGORITHMS_SCREEN
-    const val ALGORITHM_ROUTE =
+    const val SORTING_ROUTE =
         "${AppNavigationScreens.SORTING_SCREEN}/{${AppNavigationArgs.SORT_ALGORITHM_ID}}"
     const val SORTING_INFO_ROUTE =
         "${AppNavigationScreens.SORTING_INFO_SCREEN}/{${AppNavigationArgs.SORT_ALGORITHM_ID}}"
@@ -26,6 +26,12 @@ class AppDestinations(private val navController: NavHostController) {
 
     fun navigateToSortAlgorithms() {
         navController.navigate(route = AppNavigationRoutes.SORT_ALGORITHMS_ROUTE)
+    }
+
+    fun navigateToSorting(id: Int) {
+        val route = "${AppNavigationScreens.SORTING_SCREEN}/$id"
+
+        navController.navigate(route = route)
     }
 
 }

@@ -34,15 +34,21 @@ import me.brisson.algorithm_visualizer.ui.theme.stroke
 @Composable
 fun SortAlgorithmsRoute(
     modifier: Modifier = Modifier,
+    onAlgorithm: (id: Int) -> Unit,
     onBack: () -> Unit,
 ) {
 
-    SortAlgorithmsScreen(modifier = modifier.fillMaxSize(), onBack = onBack)
+    SortAlgorithmsScreen(
+        modifier = modifier.fillMaxSize(),
+        onAlgorithm = onAlgorithm,
+        onBack = onBack,
+    )
 }
 
 @Composable
 internal fun SortAlgorithmsScreen(
     modifier: Modifier,
+    onAlgorithm: (id: Int) -> Unit,
     onBack: () -> Unit,
 ) {
     Column(
@@ -87,7 +93,7 @@ internal fun SortAlgorithmsScreen(
                 AlgorithmItem(
                     modifier = Modifier.fillMaxWidth(),
                     title = "Bubble sort",
-                    onClick = { },
+                    onClick = { onAlgorithm(it) },
                 )
             }
         }
@@ -131,6 +137,10 @@ fun AlgorithmItem(
 @Composable
 fun PreviewSortAlgorithmsScreen() {
     AlgorithmVisualizerTheme {
-        SortAlgorithmsScreen(modifier = Modifier.fillMaxSize(), onBack = { })
+        SortAlgorithmsScreen(
+            modifier = Modifier.fillMaxSize(),
+            onAlgorithm = { },
+            onBack = { },
+        )
     }
 }
