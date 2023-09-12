@@ -2,6 +2,7 @@ package me.brisson.algorithm_visualizer.ui.screen.sort_algorithms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,8 +24,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import me.brisson.algorithm_visualizer.R
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.stroke
 
@@ -42,7 +45,11 @@ internal fun SortAlgorithmsScreen(
     modifier: Modifier,
     onBack: () -> Unit,
 ) {
-    Column(modifier = modifier.padding(horizontal = 20.dp)) {
+    Column(
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 20.dp),
+    ) {
         IconButton(
             modifier = Modifier
                 .offset(x = (-12).dp)
@@ -56,14 +63,14 @@ internal fun SortAlgorithmsScreen(
         }
 
         Text(
-            text = "Sorting",
+            text = stringResource(id = R.string.sorting_title),
             style = MaterialTheme.typography.headlineMedium,
             color = MaterialTheme.colorScheme.onBackground,
         )
 
         Text(
             modifier = Modifier.padding(top = 8.dp, bottom = 28.dp),
-            text = "Sorting is a very classic problem of reordering items of an array in a certain order (increasing, non-decreasing, decreasing, non-increasing, lexicographical, etc).",
+            text = stringResource(id = R.string.sorting_subtitle),
             style = MaterialTheme.typography.labelSmall,
             color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.69f),
         )
@@ -97,6 +104,7 @@ fun AlgorithmItem(
     Row(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
+            .clickable { onClick() }
             .border(width = 1.dp, color = stroke, shape = RoundedCornerShape(8.dp))
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 20.dp, vertical = 12.dp),

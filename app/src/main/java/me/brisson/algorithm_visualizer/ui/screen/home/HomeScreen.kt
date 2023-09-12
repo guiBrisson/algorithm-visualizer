@@ -41,7 +41,9 @@ internal fun HomeScreen(
     onSortClick: () -> Unit,
 ) {
     LazyVerticalGrid(
-        modifier = modifier.padding(horizontal = 20.dp),
+        modifier = modifier
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 20.dp),
         columns = GridCells.Fixed(2),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -97,7 +99,6 @@ fun GridItem(
         )
     }
 }
-
 
 
 @Preview

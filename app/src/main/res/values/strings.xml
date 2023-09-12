@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Algorithm Visualizer</string>
+    <string name="sorting_title">Sorting</string>
+    <string name="sorting_subtitle">Sorting is a very classic problem of reordering items of an array in a certain order (increasing, non-decreasing, decreasing, non-increasing, lexicographical, etc).</string>
 </resources>

@@ -69,6 +69,9 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
+    // Accompanist (no longer maintained)
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.33.1-alpha")
+
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.2")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
