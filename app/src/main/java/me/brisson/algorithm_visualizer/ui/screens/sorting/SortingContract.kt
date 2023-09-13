@@ -9,7 +9,7 @@ data class SortingUIState(
     val isPlaying: Boolean = false,
     val isSortingFinished: Boolean = false,
     val arr: IntArray = IntArray(20) { Random.nextInt(from = 10, until = 300) },
-    val indicesPositions: Pair<Int, Int>? = null,
+    val indicesPositions: IntArray? = null,
     val consoleLogState: ConsoleLogState = ConsoleLogState.COLLAPSED,
 ) {
     override fun equals(other: Any?): Boolean {
@@ -23,7 +23,7 @@ data class SortingUIState(
         if (isPlaying != other.isPlaying) return false
         if (isSortingFinished != other.isSortingFinished) return false
         if (!arr.contentEquals(other.arr)) return false
-        if (indicesPositions != other.indicesPositions) return false
+        if (!indicesPositions.contentEquals(other.indicesPositions)) return false
         if (consoleLogState != other.consoleLogState) return false
 
         return true
@@ -35,7 +35,7 @@ data class SortingUIState(
         result = 31 * result + isPlaying.hashCode()
         result = 31 * result + isSortingFinished.hashCode()
         result = 31 * result + arr.contentHashCode()
-        result = 31 * result + (indicesPositions?.hashCode() ?: 0)
+        result = 31 * result + indicesPositions.contentHashCode()
         result = 31 * result + consoleLogState.hashCode()
         return result
     }

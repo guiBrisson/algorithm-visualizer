@@ -7,23 +7,23 @@ class InsertionSort: ISort {
 
     override suspend fun sort(
         arr: IntArray,
-        onStep: (IntArray, Pair<Int, Int>) -> Unit,
+        onStep: (IntArray, IntArray) -> Unit,
         onFinish: () -> Unit
     ) {
         for(i in 1 until arr.size) {
             var j = i - 1
             val key = arr[i]
-            onStep(arr, Pair(i, j))
+            onStep(arr, intArrayOf(i, j))
 
             while (j>=0 && key < arr[j]) {
                 arr[j+1] = arr[j]
-                onStep(arr, Pair(i, j))
+                onStep(arr, intArrayOf(i, j))
                 j--
-                onStep(arr, Pair(i, j))
+                onStep(arr, intArrayOf(i, j))
             }
 
             arr[j+1] = key
-            onStep(arr, Pair(i, j))
+            onStep(arr, intArrayOf(i, j))
         }
 
         onFinish()

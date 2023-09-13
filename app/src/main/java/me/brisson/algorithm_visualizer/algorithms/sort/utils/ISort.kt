@@ -5,7 +5,7 @@ interface ISort {
 
     suspend fun sort(
         arr: IntArray,
-        onStep: (IntArray, Pair<Int, Int>) -> Unit,
+        onStep: (IntArray, IntArray) -> Unit,
         onFinish: () -> Unit
     )
 

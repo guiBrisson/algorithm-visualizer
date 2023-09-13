@@ -8,19 +8,19 @@ class BubbleSort : ISort {
 
     override suspend fun sort(
         arr: IntArray,
-        onStep: (IntArray, Pair<Int, Int>) -> Unit,
+        onStep: (IntArray, IntArray) -> Unit,
         onFinish: () -> Unit
     ) {
         for (i in arr.size - 1 downTo 1) {
             for (j in 0 until i) {
-                onStep(arr, Pair(i, j))
+                onStep(arr, intArrayOf(i, j))
                 if (arr[j] > arr[j + 1]) {
 
                     val temp = arr[j]
                     arr[j] = arr[j+1]
-                    onStep(arr, Pair(i, j))
+                    onStep(arr, intArrayOf(i, j))
                     arr[j+1] = temp
-                    onStep(arr, Pair(i, j))
+                    onStep(arr, intArrayOf(i, j))
                 }
             }
         }

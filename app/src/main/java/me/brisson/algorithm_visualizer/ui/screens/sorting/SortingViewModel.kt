@@ -35,7 +35,7 @@ class SortingViewModel @Inject constructor(
     private var delay = BASE_SPEED
 
     private var sortedArrayLevels = mutableListOf<List<Int>>()
-    private var indicesPosition = mutableListOf<Pair<Int, Int>>()
+    private var indicesPosition = mutableListOf<List<Int>>()
     private var sortingStateIndex by mutableIntStateOf(0)
 
     private fun instantiateClass(className: String): ISort? {
@@ -61,9 +61,9 @@ class SortingViewModel @Inject constructor(
             sortClass?.let { clazz ->
                 clazz.sort(
                     arr = _uiState.value.arr.clone(),
-                    onStep = { array, pair ->
-                        sortedArrayLevels.add(array.toMutableList())
-                        indicesPosition.add(pair)
+                    onStep = { levels, positions ->
+                        sortedArrayLevels.add(levels.toMutableList())
+                        indicesPosition.add(positions.toMutableList())
                     },
                     onFinish = {
                         _uiState.update {
@@ -103,7 +103,7 @@ class SortingViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
-                    indicesPositions = indicesPosition[sortingStateIndex],
+                    indicesPositions = indicesPosition[sortingStateIndex].toIntArray(),
                     isPlaying = false,
                 )
             }
@@ -120,7 +120,7 @@ class SortingViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
-                    indicesPositions = indicesPosition[sortingStateIndex],
+                    indicesPositions = indicesPosition[sortingStateIndex].toIntArray(),
                     isPlaying = false,
                     isSortingFinished = false,
                 )
@@ -156,7 +156,7 @@ class SortingViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         arr = sortedArrayLevels[i].toIntArray(),
-                        indicesPositions = indicesPosition[i],
+                        indicesPositions = indicesPosition[i].toIntArray(),
                     )
                 }
             } else {

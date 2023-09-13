@@ -27,7 +27,7 @@ fun BarIllustration(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(4.dp),
     arr: IntArray,
-    indicesPosition: Pair<Int, Int>? = null,
+    indicesPosition: IntArray? = null,
 ) {
     LazyRow(
         modifier = modifier,
@@ -36,7 +36,7 @@ fun BarIllustration(
     ) {
         itemsIndexed(arr.toTypedArray()) { index, item ->
             val indicesIndicatorColor: Color =
-                if (indicesPosition != null && (indicesPosition.first == index || indicesPosition.second == index)) {
+                if (indicesPosition != null && indicesPosition.contains(index)) {
                     Color.Yellow
                 } else {
                     MaterialTheme.colorScheme.primary

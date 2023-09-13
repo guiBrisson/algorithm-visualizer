@@ -17,7 +17,7 @@ import me.brisson.algorithm_visualizer.ui.theme.background_dark
 fun SortAlgorithmVisualizer(
     modifier: Modifier = Modifier,
     arr: IntArray,
-    indicesPosition: Pair<Int, Int>? = null,
+    indicesPosition: IntArray? = null,
 ) {
     Column(
         modifier = modifier
