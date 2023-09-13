@@ -35,6 +35,7 @@ class SortingViewModel @Inject constructor(
     private var delay = BASE_SPEED
 
     private var sortedArrayLevels = mutableListOf<List<Int>>()
+    private var indicesPosition = mutableListOf<Pair<Int, Int>>()
     private var sortingStateIndex by mutableIntStateOf(0)
 
     private fun instantiateClass(className: String): ISort? {
@@ -60,8 +61,9 @@ class SortingViewModel @Inject constructor(
             sortClass?.let { clazz ->
                 clazz.sort(
                     arr = _uiState.value.arr.clone(),
-                    onSwap = { modifiedArray ->
-                        sortedArrayLevels.add(modifiedArray.toMutableList())
+                    onStep = { array, pair ->
+                        sortedArrayLevels.add(array.toMutableList())
+                        indicesPosition.add(pair)
                     },
                     onFinish = {
                         _uiState.update {
@@ -97,30 +99,32 @@ class SortingViewModel @Inject constructor(
 
     private fun next() {
         if (sortingStateIndex < sortedArrayLevels.size - 1) {
+            sortingStateIndex++
             _uiState.update {
                 it.copy(
                     arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
+                    indicesPositions = indicesPosition[sortingStateIndex],
                     isPlaying = false,
                 )
             }
-            sortingStateIndex++
 
             if (sortingStateIndex == sortedArrayLevels.size - 1) {
-                _uiState.update { it.copy(isSortingFinished = true) }
+                updateUiAsFinished()
             }
         }
     }
 
     private fun previous() {
         if (sortingStateIndex > 0) {
+            sortingStateIndex--
             _uiState.update {
                 it.copy(
                     arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
+                    indicesPositions = indicesPosition[sortingStateIndex],
                     isPlaying = false,
                     isSortingFinished = false,
                 )
             }
-            sortingStateIndex--
         }
     }
 
@@ -128,8 +132,8 @@ class SortingViewModel @Inject constructor(
         if (_uiState.value.isSortingFinished) {
             replay()
         }
-        runThroughSortedArrayLevels()
         _uiState.update { it.copy(isPlaying = !_uiState.value.isPlaying) }
+        runThroughSortedArrayLevels()
     }
 
     private fun replay() {
@@ -137,7 +141,8 @@ class SortingViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 isSortingFinished = false,
-                arr = sortedArrayLevels[sortingStateIndex].toIntArray()
+                arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
+                indicesPositions = null,
             )
         }
     }
@@ -148,13 +153,22 @@ class SortingViewModel @Inject constructor(
 
             if (_uiState.value.isPlaying) {
                 delay(delay)
-                _uiState.update { it.copy(arr = sortedArrayLevels[i].toIntArray()) }
+                _uiState.update {
+                    it.copy(
+                        arr = sortedArrayLevels[i].toIntArray(),
+                        indicesPositions = indicesPosition[i],
+                    )
+                }
             } else {
                 return@launch
             }
         }
 
-        _uiState.update { it.copy(isSortingFinished = true) }
+        updateUiAsFinished()
+    }
+
+    private fun updateUiAsFinished() {
+        _uiState.update { it.copy(isSortingFinished = true, indicesPositions = null) }
     }
 
     companion object {

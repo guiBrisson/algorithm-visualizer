@@ -79,7 +79,12 @@ internal fun SortingScreen(
             onInfo = { },
             onMore = { },
         )
-        SortAlgorithmVisualizer(modifier = Modifier.weight(1f), arr = uiState.arr)
+
+        SortAlgorithmVisualizer(
+            modifier = Modifier.weight(1f),
+            arr = uiState.arr,
+            indicesPosition = uiState.indicesPositions,
+        )
 
         ConsoleLog(state = uiState.consoleLogState, onToggleState = onUpdateConsoleLogState)
 

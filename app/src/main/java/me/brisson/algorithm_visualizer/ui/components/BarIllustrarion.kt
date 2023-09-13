@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -18,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
@@ -26,14 +27,22 @@ fun BarIllustration(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(4.dp),
     arr: IntArray,
+    indicesPosition: Pair<Int, Int>? = null,
 ) {
     LazyRow(
         modifier = modifier,
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = Alignment.Bottom,
     ) {
-        items(arr.toTypedArray()) { i ->
-            BarItem(modifier = Modifier, height = i.dp)
+        itemsIndexed(arr.toTypedArray()) { index, item ->
+            val indicesIndicatorColor: Color =
+                if (indicesPosition != null && (indicesPosition.first == index || indicesPosition.second == index)) {
+                    Color.Yellow
+                } else {
+                    MaterialTheme.colorScheme.primary
+                }
+
+            BarItem(modifier = Modifier, height = item.dp, color = indicesIndicatorColor)
         }
     }
 }
@@ -42,6 +51,7 @@ fun BarIllustration(
 fun BarItem(
     modifier: Modifier = Modifier,
     height: Dp,
+    color: Color = MaterialTheme.colorScheme.primary
 ) {
     var componentHeight by remember { mutableStateOf(0.dp) }
 
@@ -54,7 +64,7 @@ fun BarItem(
             .animateContentSize()
             .clip(RoundedCornerShape(2.dp))
             .size(height = componentHeight, width = 12.dp)
-            .background(MaterialTheme.colorScheme.primary),
+            .background(color),
         content = { },
     )
 }

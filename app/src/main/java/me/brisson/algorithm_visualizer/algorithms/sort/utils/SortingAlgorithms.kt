@@ -2,8 +2,10 @@ package me.brisson.algorithm_visualizer.algorithms.sort.utils
 
 import me.brisson.algorithm_visualizer.algorithms.sort.implementations.BubbleSort
 import me.brisson.algorithm_visualizer.algorithms.sort.implementations.InsertionSort
+import me.brisson.algorithm_visualizer.algorithms.sort.implementations.SelectionSort
 
 enum class SortingAlgorithms(val algorithmClass: ISort) {
     INSERTION(algorithmClass = InsertionSort()),
-    BUBBLE(algorithmClass = BubbleSort())
+    BUBBLE(algorithmClass = BubbleSort()),
+    SELECTION(algorithmClass = SelectionSort()),
 }
