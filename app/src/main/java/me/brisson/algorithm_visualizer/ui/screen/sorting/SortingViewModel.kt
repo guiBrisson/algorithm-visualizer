@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,33 +15,64 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.brisson.algorithm_visualizer.algorithms.sort.InsertionSort
+import me.brisson.algorithm_visualizer.algorithms.sort.ISort
+import me.brisson.algorithm_visualizer.navigation.AppNavigationArgs
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import javax.inject.Inject
 
 @HiltViewModel
 class SortingViewModel @Inject constructor(
-    private val insertionSort: InsertionSort,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+    private val _sortingClassName: String =
+        checkNotNull(savedStateHandle[AppNavigationArgs.SORT_ALGORITHM_ID])
+
     private val _uiState = MutableStateFlow(SortingUIState())
     val uiState: StateFlow<SortingUIState> = _uiState.asStateFlow()
+
+    private val sortClass: ISort? = instantiateClass(_sortingClassName)
 
     private var delay = BASE_SPEED
 
     private var sortedArrayLevels = mutableListOf<List<Int>>()
     private var sortingStateIndex by mutableIntStateOf(0)
 
+    private fun instantiateClass(className: String): ISort? {
+        return try {
+            val clazz = Class.forName(className)
+            val instance = clazz.getDeclaredConstructor().newInstance()
+            Log.d(TAG, "instantiateClass: ${instance::class.java.simpleName}")
+
+            if (instance is ISort) {
+                instance
+            } else null
+        } catch (e: ClassNotFoundException) {
+            e.printStackTrace()
+            null
+        } catch (e: InstantiationException) {
+            e.printStackTrace()
+            null
+        }
+    }
+
     fun runSortingToPopulateArrayLevels() {
         viewModelScope.launch(Dispatchers.IO) {
-            insertionSort.sort(
-                _uiState.value.arr.clone(),
-                onSwap = { modifiedArray ->
-                    sortedArrayLevels.add(modifiedArray.toMutableList())
-                },
-                onFinish = {
-                    _uiState.update { it.copy(isVisualizerAvailable = true) }
-                },
-            )
+            sortClass?.let { clazz ->
+                clazz.sort(
+                    arr = _uiState.value.arr.clone(),
+                    onSwap = { modifiedArray ->
+                        sortedArrayLevels.add(modifiedArray.toMutableList())
+                    },
+                    onFinish = {
+                        _uiState.update {
+                            it.copy(
+                                isVisualizerAvailable = true,
+                                algorithmName = clazz.algorithmName
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 
@@ -108,7 +140,6 @@ class SortingViewModel @Inject constructor(
                 arr = sortedArrayLevels[sortingStateIndex].toIntArray()
             )
         }
-        runThroughSortedArrayLevels()
     }
 
     private fun runThroughSortedArrayLevels() = viewModelScope.launch(Dispatchers.IO) {

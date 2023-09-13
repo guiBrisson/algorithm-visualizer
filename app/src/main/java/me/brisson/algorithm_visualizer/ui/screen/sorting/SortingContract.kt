@@ -4,6 +4,7 @@ import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import kotlin.random.Random
 
 data class SortingUIState(
+    val algorithmName: String = "",
     val isVisualizerAvailable: Boolean = false,
     val isPlaying: Boolean = false,
     val isSortingFinished: Boolean = false,
@@ -16,6 +17,7 @@ data class SortingUIState(
 
         other as SortingUIState
 
+        if (algorithmName != other.algorithmName) return false
         if (isVisualizerAvailable != other.isVisualizerAvailable) return false
         if (isPlaying != other.isPlaying) return false
         if (isSortingFinished != other.isSortingFinished) return false
@@ -26,7 +28,8 @@ data class SortingUIState(
     }
 
     override fun hashCode(): Int {
-        var result = isVisualizerAvailable.hashCode()
+        var result = algorithmName.hashCode()
+        result = 31 * result + isVisualizerAvailable.hashCode()
         result = 31 * result + isPlaying.hashCode()
         result = 31 * result + isSortingFinished.hashCode()
         result = 31 * result + arr.contentHashCode()

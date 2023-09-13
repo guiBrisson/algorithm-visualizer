@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
@@ -21,25 +22,37 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import me.brisson.algorithm_visualizer.R
+import me.brisson.algorithm_visualizer.algorithms.sort.SortingAlgorithms
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.stroke
 
 @Composable
 fun SortAlgorithmsRoute(
     modifier: Modifier = Modifier,
-    onAlgorithm: (id: Int) -> Unit,
+    viewModel: SortAlgorithmsViewModel = hiltViewModel(),
+    onAlgorithm: (className: String) -> Unit,
     onBack: () -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.updateSortAlgorithmsList()
+    }
 
     SortAlgorithmsScreen(
         modifier = modifier.fillMaxSize(),
+        uiState = uiState,
         onAlgorithm = onAlgorithm,
         onBack = onBack,
     )
@@ -48,7 +61,8 @@ fun SortAlgorithmsRoute(
 @Composable
 internal fun SortAlgorithmsScreen(
     modifier: Modifier,
-    onAlgorithm: (id: Int) -> Unit,
+    uiState: SortAlgorithmsUiState,
+    onAlgorithm: (className: String) -> Unit,
     onBack: () -> Unit,
 ) {
     Column(
@@ -89,11 +103,14 @@ internal fun SortAlgorithmsScreen(
         )
 
         LazyColumn(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            items(8) {
+            items(uiState.sortingList) { algorithm ->
                 AlgorithmItem(
                     modifier = Modifier.fillMaxWidth(),
-                    title = "Bubble sort",
-                    onClick = { onAlgorithm(it) },
+                    title = algorithm.algorithmClass.algorithmName,
+                    onClick = {
+                        val className = algorithm.algorithmClass::class.java.name
+                        onAlgorithm(className)
+                    },
                 )
             }
         }
@@ -137,8 +154,13 @@ fun AlgorithmItem(
 @Composable
 fun PreviewSortAlgorithmsScreen() {
     AlgorithmVisualizerTheme {
+        val uiState = SortAlgorithmsUiState(
+            sortingList = enumValues<SortingAlgorithms>().toList()
+        )
+
         SortAlgorithmsScreen(
             modifier = Modifier.fillMaxSize(),
+            uiState = uiState,
             onAlgorithm = { },
             onBack = { },
         )

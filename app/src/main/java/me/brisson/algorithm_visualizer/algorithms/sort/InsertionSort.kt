@@ -1,6 +1,7 @@
 package me.brisson.algorithm_visualizer.algorithms.sort
 
 class InsertionSort: ISort {
+    override val algorithmName: String = "Insertion sort"
 
     override suspend fun sort(
         arr: IntArray,

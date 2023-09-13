@@ -37,7 +37,7 @@ fun AppNavigation(
         composable(
             route = AppNavigationRoutes.SORTING_ROUTE,
             arguments = listOf(navArgument(AppNavigationArgs.SORT_ALGORITHM_ID) {
-                type = NavType.IntType
+                type = NavType.StringType
             }),
         ) {
             SortingRoute(

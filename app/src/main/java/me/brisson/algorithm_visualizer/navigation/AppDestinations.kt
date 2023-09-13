@@ -28,8 +28,8 @@ class AppDestinations(private val navController: NavHostController) {
         navController.navigate(route = AppNavigationRoutes.SORT_ALGORITHMS_ROUTE)
     }
 
-    fun navigateToSorting(id: Int) {
-        val route = "${AppNavigationScreens.SORTING_SCREEN}/$id"
+    fun navigateToSorting(className: String) {
+        val route = "${AppNavigationScreens.SORTING_SCREEN}/$className"
 
         navController.navigate(route = route)
     }

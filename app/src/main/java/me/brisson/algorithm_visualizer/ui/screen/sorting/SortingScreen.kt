@@ -52,7 +52,7 @@ fun SortingRoute(
         onPrevious = { viewModel.onEvent(SortingEvents.Previous) },
         onNext = { viewModel.onEvent(SortingEvents.Next) },
         onSpeed = { viewModel.onEvent(SortingEvents.ChangeSpeed(it)) },
-        onBack = onBack
+        onBack = onBack,
     )
 }
 
@@ -74,7 +74,7 @@ internal fun SortingScreen(
             .background(MaterialTheme.colorScheme.background),
     ) {
         TopBar(
-            sortAlgorithmName = "Bubble sort",
+            sortAlgorithmName = uiState.algorithmName,
             onBack = onBack,
             onInfo = { },
             onMore = { },
@@ -148,7 +148,9 @@ private fun TopBar(
 @Composable
 private fun PreviewSortingScreen() {
     AlgorithmVisualizerTheme {
-        val uiState = SortingUIState()
+        val uiState = SortingUIState(
+            algorithmName = "Bubble sort"
+        )
 
         SortingScreen(
             modifier = Modifier,

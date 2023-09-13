@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowLeft
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
@@ -31,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.text.font.FontWeight
@@ -142,7 +144,8 @@ private fun SpeedControlPopUp(
         Column(
             modifier = modifier
                 .width(130.dp)
-                .border(width = 1.dp, color = stroke)
+                .clip(RoundedCornerShape(8.dp))
+                .border(width = 1.dp, color = stroke, shape = RoundedCornerShape(8.dp))
                 .background(background_dark.copy(alpha = 0.9f))
                 .padding(vertical = 8.dp, horizontal = 4.dp),
             verticalArrangement = Arrangement.spacedBy(0.dp),
@@ -158,7 +161,7 @@ private fun SpeedControlPopUp(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onSelect(it); onDismissRequest() }
-                        .padding(vertical = 12.dp, horizontal = 8.dp),
+                        .padding(vertical = 8.dp, horizontal = 12.dp),
                     text = text,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Medium
