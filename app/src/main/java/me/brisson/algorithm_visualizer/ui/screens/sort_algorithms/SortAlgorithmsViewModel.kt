@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.ui.screen.sort_algorithms
+package me.brisson.algorithm_visualizer.ui.screens.sort_algorithms
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import me.brisson.algorithm_visualizer.algorithms.sort.SortingAlgorithms
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.SortingAlgorithms
 import javax.inject.Inject
 
 @HiltViewModel

@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.ui.screen.sort_algorithms
+package me.brisson.algorithm_visualizer.ui.screens.sort_algorithms
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,7 +33,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import me.brisson.algorithm_visualizer.R
-import me.brisson.algorithm_visualizer.algorithms.sort.SortingAlgorithms
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.SortingAlgorithms
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.stroke
 

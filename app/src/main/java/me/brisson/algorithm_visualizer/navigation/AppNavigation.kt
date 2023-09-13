@@ -8,9 +8,9 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import me.brisson.algorithm_visualizer.ui.screen.home.HomeRoute
-import me.brisson.algorithm_visualizer.ui.screen.sort_algorithms.SortAlgorithmsRoute
-import me.brisson.algorithm_visualizer.ui.screen.sorting.SortingRoute
+import me.brisson.algorithm_visualizer.ui.screens.home.HomeRoute
+import me.brisson.algorithm_visualizer.ui.screens.sort_algorithms.SortAlgorithmsRoute
+import me.brisson.algorithm_visualizer.ui.screens.sorting.SortingRoute
 
 @Composable
 fun AppNavigation(

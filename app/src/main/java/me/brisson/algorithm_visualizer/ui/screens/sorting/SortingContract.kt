@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.ui.screen.sorting
+package me.brisson.algorithm_visualizer.ui.screens.sorting
 
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import kotlin.random.Random

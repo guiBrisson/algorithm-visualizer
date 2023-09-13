@@ -1,4 +1,6 @@
-package me.brisson.algorithm_visualizer.algorithms.sort
+package me.brisson.algorithm_visualizer.algorithms.sort.implementations
+
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.ISort
 
 
 class BubbleSort : ISort {

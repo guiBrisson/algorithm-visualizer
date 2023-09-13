@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.ui.screen.sorting
+package me.brisson.algorithm_visualizer.ui.screens.sorting
 
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.brisson.algorithm_visualizer.algorithms.sort.ISort
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.ISort
 import me.brisson.algorithm_visualizer.navigation.AppNavigationArgs
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import javax.inject.Inject

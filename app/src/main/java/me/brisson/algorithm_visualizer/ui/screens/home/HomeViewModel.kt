@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.ui.screen.home
+package me.brisson.algorithm_visualizer.ui.screens.home
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.algorithms.sort
+package me.brisson.algorithm_visualizer.algorithms.sort.utils
 
 interface ISort {
     val algorithmName: String

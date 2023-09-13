@@ -1,4 +1,4 @@
-package me.brisson.algorithm_visualizer.ui.screen.sorting
+package me.brisson.algorithm_visualizer.ui.screens.sorting
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
