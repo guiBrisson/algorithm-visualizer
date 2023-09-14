@@ -1,31 +1,33 @@
 package me.brisson.algorithm_visualizer.algorithms.sort.implementations
 
-import me.brisson.algorithm_visualizer.algorithms.sort.utils.ISort
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.Sort
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartTracer
 
-class InsertionSort: ISort {
+class InsertionSort: Sort() {
     override val algorithmName: String = "Insertion sort"
+    override val chartTracer: ChartTracer = ChartTracer()
 
     override suspend fun sort(
         arr: IntArray,
-        onStep: (IntArray, IntArray) -> Unit,
         onFinish: () -> Unit
     ) {
+        chartTracer.initialState(arr.toList())
         for(i in 1 until arr.size) {
             var j = i - 1
             val key = arr[i]
-            onStep(arr, intArrayOf(i, j))
+            chartTracer.selectState(i)
 
             while (j>=0 && key < arr[j]) {
                 arr[j+1] = arr[j]
-                onStep(arr, intArrayOf(i, j))
+                chartTracer.swapState(arr.toList(), j + 1, arr[j + 1])
                 j--
-                onStep(arr, intArrayOf(i, j))
             }
 
             arr[j+1] = key
-            onStep(arr, intArrayOf(i, j))
+            chartTracer.swapState(arr.toList(), j + 1, arr[i])
         }
 
+        chartTracer.finalState(arr.toList())
         onFinish()
     }
 }

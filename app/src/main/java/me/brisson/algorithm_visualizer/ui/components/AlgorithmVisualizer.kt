@@ -10,14 +10,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 import me.brisson.algorithm_visualizer.ui.theme.background_dark
 
 
 @Composable
 fun SortAlgorithmVisualizer(
     modifier: Modifier = Modifier,
-    arr: IntArray,
-    indicesPosition: IntArray? = null,
+    chartState: ChartState,
 ) {
     Column(
         modifier = modifier
@@ -32,8 +32,7 @@ fun SortAlgorithmVisualizer(
                 .height(300.dp)
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            arr = arr,
-            indicesPosition = indicesPosition,
+            chartState = chartState,
         )
     }
 }

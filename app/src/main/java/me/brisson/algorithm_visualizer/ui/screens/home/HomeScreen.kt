@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import me.brisson.algorithm_visualizer.R
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 import me.brisson.algorithm_visualizer.ui.components.BarIllustration
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.stroke
@@ -66,7 +67,9 @@ internal fun HomeScreen(
                 illustration = {
                     BarIllustration(
                         modifier = Modifier.height(50.dp),
-                        arr = IntArray(6) { Random.nextInt(from = 15, until = 50) },
+                        chartState = ChartState(
+                            arr = List(6) { Random.nextInt(from = 15, until = 50) }
+                        )
                     )
                 },
                 onClick = onSortClick

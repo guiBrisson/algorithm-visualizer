@@ -15,10 +15,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import me.brisson.algorithm_visualizer.algorithms.sort.utils.ISort
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.Sort
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
+import me.brisson.algorithm_visualizer.algorithms.utils.MessageLog
 import me.brisson.algorithm_visualizer.navigation.AppNavigationArgs
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class SortingViewModel @Inject constructor(
@@ -27,53 +30,37 @@ class SortingViewModel @Inject constructor(
     private val _sortingClassName: String =
         checkNotNull(savedStateHandle[AppNavigationArgs.SORT_ALGORITHM_ID])
 
+    private val sortClass: Sort? = Sort.instantiateClass(_sortingClassName)
+
     private val _uiState = MutableStateFlow(SortingUIState())
     val uiState: StateFlow<SortingUIState> = _uiState.asStateFlow()
 
-    private val sortClass: ISort? = instantiateClass(_sortingClassName)
-
     private var delay = BASE_SPEED
 
-    private var sortedArrayLevels = mutableListOf<List<Int>>()
-    private var indicesPosition = mutableListOf<List<Int>>()
-    private var sortingStateIndex by mutableIntStateOf(0)
+    private var chartStateList: List<ChartState> = emptyList()
+    private var messageLogList: List<MessageLog> = emptyList()
+    private var _sortingStateIndex by mutableIntStateOf(0)
 
-    private fun instantiateClass(className: String): ISort? {
-        return try {
-            val clazz = Class.forName(className)
-            val instance = clazz.getDeclaredConstructor().newInstance()
-            Log.d(TAG, "instantiateClass: ${instance::class.java.simpleName}")
-
-            if (instance is ISort) {
-                instance
-            } else null
-        } catch (e: ClassNotFoundException) {
-            e.printStackTrace()
-            null
-        } catch (e: InstantiationException) {
-            e.printStackTrace()
-            null
-        }
-    }
 
     fun runSortingToPopulateArrayLevels() {
         viewModelScope.launch(Dispatchers.IO) {
             sortClass?.let { clazz ->
                 clazz.sort(
-                    arr = _uiState.value.arr.clone(),
-                    onStep = { levels, positions ->
-                        sortedArrayLevels.add(levels.toMutableList())
-                        indicesPosition.add(positions.toMutableList())
-                    },
+                    arr = IntArray(20) { Random.nextInt(from = 10, until = 300) },
                     onFinish = {
+                        chartStateList = clazz.chartTracer.chartStateList()
+                        messageLogList = clazz.chartTracer.logMessages()
+
                         _uiState.update {
                             it.copy(
                                 isVisualizerAvailable = true,
-                                algorithmName = clazz.algorithmName
+                                algorithmName = clazz.algorithmName,
+                                chartState = chartStateList.first(),
                             )
                         }
                     }
                 )
+
             }
         }
     }
@@ -98,31 +85,29 @@ class SortingViewModel @Inject constructor(
     }
 
     private fun next() {
-        if (sortingStateIndex < sortedArrayLevels.size - 1) {
-            sortingStateIndex++
+        if (_sortingStateIndex < chartStateList.lastIndex) {
+            updateSortingIndex(_sortingStateIndex++)
             _uiState.update {
                 it.copy(
-                    arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
-                    indicesPositions = indicesPosition[sortingStateIndex].toIntArray(),
                     isPlaying = false,
+                    chartState = chartStateList[_sortingStateIndex]
                 )
             }
 
-            if (sortingStateIndex == sortedArrayLevels.size - 1) {
-                updateUiAsFinished()
+            if (_sortingStateIndex == chartStateList.lastIndex) {
+                updateUIAsFinished()
             }
         }
     }
 
     private fun previous() {
-        if (sortingStateIndex > 0) {
-            sortingStateIndex--
+        if (_sortingStateIndex > 0) {
+            updateSortingIndex(_sortingStateIndex--)
             _uiState.update {
                 it.copy(
-                    arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
-                    indicesPositions = indicesPosition[sortingStateIndex].toIntArray(),
                     isPlaying = false,
                     isSortingFinished = false,
+                    chartState = chartStateList[_sortingStateIndex],
                 )
             }
         }
@@ -137,42 +122,59 @@ class SortingViewModel @Inject constructor(
     }
 
     private fun replay() {
-        sortingStateIndex = 0
+        updateSortingIndex(0)
         _uiState.update {
             it.copy(
                 isSortingFinished = false,
-                arr = sortedArrayLevels[sortingStateIndex].toIntArray(),
-                indicesPositions = null,
+                chartState = chartStateList[_sortingStateIndex],
             )
         }
     }
 
     private fun runThroughSortedArrayLevels() = viewModelScope.launch(Dispatchers.IO) {
-        for (i in sortingStateIndex until sortedArrayLevels.size) {
-            sortingStateIndex = i
+        for (i in _sortingStateIndex until chartStateList.size) {
+            updateSortingIndex(i)
 
             if (_uiState.value.isPlaying) {
-                delay(delay)
+                val currentLogMessageList = logMessagesBasedOnIndex(i)
                 _uiState.update {
                     it.copy(
-                        arr = sortedArrayLevels[i].toIntArray(),
-                        indicesPositions = indicesPosition[i].toIntArray(),
+                        chartState = chartStateList[i],
+                        logMessages = currentLogMessageList.toList()
                     )
                 }
+
+                delay(delay)
             } else {
                 return@launch
             }
         }
 
-        updateUiAsFinished()
+        updateUIAsFinished()
     }
 
-    private fun updateUiAsFinished() {
-        _uiState.update { it.copy(isSortingFinished = true, indicesPositions = null) }
+    private fun logMessagesBasedOnIndex(i: Int): MutableList<MessageLog> {
+        val currentLogMessageList = _uiState.value.logMessages.toMutableList()
+
+        if (messageLogList.map { it.index }.contains(i)) {
+
+            messageLogList.find { it.index == i }?.let {
+                currentLogMessageList.add(it)
+            }
+        }
+        return currentLogMessageList
+    }
+
+    private fun updateUIAsFinished() {
+        _uiState.update { it.copy(isSortingFinished = true) }
+    }
+
+    private fun updateSortingIndex(value: Int) {
+        _sortingStateIndex = value
     }
 
     companion object {
-        private val TAG = SortingViewModel::class.java.simpleName
+        private val TAG = this::class.java.simpleName
         private const val BASE_SPEED = 200L
     }
 }

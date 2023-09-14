@@ -1,29 +1,29 @@
 package me.brisson.algorithm_visualizer.algorithms.sort.implementations
 
-import me.brisson.algorithm_visualizer.algorithms.sort.utils.ISort
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.Sort
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartTracer
 
 
-class BubbleSort : ISort {
+class BubbleSort : Sort() {
     override val algorithmName: String = "Bubble sort"
+    override val chartTracer: ChartTracer = ChartTracer()
 
-    override suspend fun sort(
-        arr: IntArray,
-        onStep: (IntArray, IntArray) -> Unit,
-        onFinish: () -> Unit
-    ) {
+    override suspend fun sort(arr: IntArray, onFinish: () -> Unit) {
+        chartTracer.initialState(arr.toList())
+
         for (i in arr.size - 1 downTo 1) {
             for (j in 0 until i) {
-                onStep(arr, intArrayOf(i, j))
+                chartTracer.selectState(j, j + 1)
                 if (arr[j] > arr[j + 1]) {
-
                     val temp = arr[j]
                     arr[j] = arr[j+1]
-                    onStep(arr, intArrayOf(i, j))
                     arr[j+1] = temp
-                    onStep(arr, intArrayOf(i, j))
+                    chartTracer.swapState(arr.toList(), j, j+1)
                 }
             }
         }
+
+        chartTracer.finalState(arr.toList())
         onFinish()
     }
 

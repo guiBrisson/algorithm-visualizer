@@ -21,23 +21,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartIndicatorType
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 
 @Composable
 fun BarIllustration(
     modifier: Modifier = Modifier,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.spacedBy(4.dp),
-    arr: IntArray,
-    indicesPosition: IntArray? = null,
+    chartState: ChartState,
 ) {
     LazyRow(
         modifier = modifier,
         horizontalArrangement = horizontalArrangement,
         verticalAlignment = Alignment.Bottom,
     ) {
-        itemsIndexed(arr.toTypedArray()) { index, item ->
+        itemsIndexed(chartState.arr.toTypedArray()) { index, item ->
             val indicesIndicatorColor: Color =
-                if (indicesPosition != null && indicesPosition.contains(index)) {
-                    Color.Yellow
+                if (chartState.indicesIndicators != null &&
+                    chartState.indicesIndicators.first.contains(index)
+                ) {
+                    when (chartState.indicesIndicators.second) {
+                        ChartIndicatorType.SELECT -> Color.Blue
+                        ChartIndicatorType.SWAP -> Color.Yellow
+                    }
                 } else {
                     MaterialTheme.colorScheme.primary
                 }

@@ -1,52 +1,52 @@
 package me.brisson.algorithm_visualizer.algorithms.sort.implementations
 
-import me.brisson.algorithm_visualizer.algorithms.sort.utils.ISort
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.Sort
+import me.brisson.algorithm_visualizer.algorithms.utils.ChartTracer
 
-class QuickSort: ISort {
+
+class QuickSort: Sort() {
     override val algorithmName: String = "Quick sort"
+    override val chartTracer: ChartTracer = ChartTracer()
 
     override suspend fun sort(
         arr: IntArray,
-        onStep: (IntArray, IntArray) -> Unit,
         onFinish: () -> Unit
     ) {
-        quickSort(arr, 0, arr.size - 1, onStep)
+        chartTracer.initialState(arr.toList())
+        quickSort(arr, 0, arr.lastIndex)
+
+        chartTracer.finalState(arr.toList())
         onFinish()
     }
 
-    private fun quickSort(
-        arr: IntArray,
-        left: Int,
-        right: Int,
-        onStep: (IntArray, IntArray) -> Unit,
-    ) {
-        var left1 = left
+    private fun quickSort(arr: IntArray, left: Int, right: Int) {
+        var left = left
         var l: Int
         var r: Int
         var s: Int
-        while (right > left1) {
-            l = left1
+        while (right > left) {
+            l = left
             r = right
-            s = arr[left1]
+            s = arr[left]
             while (l < r) {
-                onStep(arr, intArrayOf(l, r))
+                chartTracer.selectState(left, right)
                 while (arr[r] > s) {
+                    chartTracer.selectState(r)
                     r--
-                    onStep(arr, intArrayOf(l, r))
                 }
                 arr[l] = arr[r]
-                onStep(arr, intArrayOf(l, r))
+                chartTracer.swapState(arr.toList(), l, arr[r])
                 while (s >= arr[l] && l < r) {
+                    chartTracer.selectState(l)
                     l++
-                    onStep(arr, intArrayOf(l, r))
                 }
                 arr[r] = arr[l]
-                onStep(arr, intArrayOf(l, r))
+                chartTracer.swapState(arr.toList(), r, arr[l])
             }
             arr[l] = s
-            onStep(arr, intArrayOf(l, r))
-            quickSort(arr, left1, l - 1, onStep)
-            left1 = l + 1
+            chartTracer.swapState(arr.toList(), l, s)
+            quickSort(arr, left, l - 1)
+            left = l + 1
         }
     }
 

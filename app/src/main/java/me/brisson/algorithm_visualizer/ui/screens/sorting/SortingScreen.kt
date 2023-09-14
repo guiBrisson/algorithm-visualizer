@@ -80,13 +80,18 @@ internal fun SortingScreen(
             onMore = { },
         )
 
-        SortAlgorithmVisualizer(
-            modifier = Modifier.weight(1f),
-            arr = uiState.arr,
-            indicesPosition = uiState.indicesPositions,
-        )
+        uiState.chartState?.let { chartState ->
+            SortAlgorithmVisualizer(
+                modifier = Modifier.weight(1f),
+                chartState = chartState,
+            )
+        }
 
-        ConsoleLog(state = uiState.consoleLogState, onToggleState = onUpdateConsoleLogState)
+        ConsoleLog(
+            state = uiState.consoleLogState,
+            onToggleState = onUpdateConsoleLogState,
+            logMessages = uiState.logMessages,
+        )
 
         AlgorithmController(
             isAvailable = uiState.isVisualizerAvailable,
