@@ -15,32 +15,49 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.brisson.algorithm_visualizer.R
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.SortingAlgorithms
 import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 import me.brisson.algorithm_visualizer.ui.components.BarIllustration
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.stroke
-import kotlin.random.Random
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun HomeRoute(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = hiltViewModel(),
+    viewModel: HomeViewModel = viewModel(),
     onSortClick: () -> Unit,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    HomeScreen(modifier = modifier.fillMaxSize(), onSortClick = onSortClick)
+    LaunchedEffect(Unit) {
+        viewModel.repeatUpdatingNewValues()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose { viewModel.clear() }
+    }
+    HomeScreen(
+        modifier = modifier.fillMaxSize(),
+        uiState = uiState,
+        onSortClick = onSortClick
+    )
 }
 
 @Composable
 internal fun HomeScreen(
     modifier: Modifier,
+    uiState: HomeUiState,
     onSortClick: () -> Unit,
 ) {
     LazyVerticalGrid(
@@ -60,15 +77,17 @@ internal fun HomeScreen(
             )
         }
 
-        items(6) {
+        item {
+            val sortingAlgorithmsListAmount = enumValues<SortingAlgorithms>().size
+
             GridItem(
                 title = "Sorting",
-                algorithmsAmount = 6,
+                algorithmsAmount = sortingAlgorithmsListAmount,
                 illustration = {
                     BarIllustration(
                         modifier = Modifier.height(50.dp),
                         chartState = ChartState(
-                            arr = List(6) { Random.nextInt(from = 15, until = 50) }
+                            arr = uiState.sortingIntList
                         )
                     )
                 },
@@ -115,6 +134,9 @@ fun GridItem(
 @Composable
 private fun PreviewHomeScreen() {
     AlgorithmVisualizerTheme {
-        HomeScreen(modifier = Modifier.fillMaxSize(), onSortClick = { })
+        val uiState = HomeUiState(
+            sortingIntList = listOf(40, 12, 46, 23, 50, 1),
+        )
+        HomeScreen(modifier = Modifier.fillMaxSize(), uiState = uiState, onSortClick = { })
     }
 }

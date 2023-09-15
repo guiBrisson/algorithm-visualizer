@@ -7,7 +7,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,13 +19,9 @@ import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 import me.brisson.algorithm_visualizer.algorithms.utils.MessageLog
 import me.brisson.algorithm_visualizer.navigation.AppNavigationArgs
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
-import javax.inject.Inject
 import kotlin.random.Random
 
-@HiltViewModel
-class SortingViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+class SortingViewModel(savedStateHandle: SavedStateHandle, ) : ViewModel() {
     private val _sortingClassName: String =
         checkNotNull(savedStateHandle[AppNavigationArgs.SORT_ALGORITHM_ID])
 

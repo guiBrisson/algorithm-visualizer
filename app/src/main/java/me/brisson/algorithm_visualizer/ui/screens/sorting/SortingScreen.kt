@@ -17,28 +17,28 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import me.brisson.algorithm_visualizer.ui.components.AlgorithmController
 import me.brisson.algorithm_visualizer.ui.components.SortAlgorithmVisualizer
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLog
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.background_dark
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SortingRoute(
     modifier: Modifier = Modifier,
-    viewModel: SortingViewModel = hiltViewModel(),
+    viewModel: SortingViewModel = viewModel(),
     onBack: () -> Unit,
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.runSortingToPopulateArrayLevels()
