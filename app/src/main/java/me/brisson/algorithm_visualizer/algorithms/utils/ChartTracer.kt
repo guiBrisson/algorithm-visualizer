@@ -28,15 +28,15 @@ class ChartTracer {
     /**
      * Swap values positions
      *
-     * @param x first value
-     * @param y second value
+     * @param x first value index
+     * @param y second value index
      *
      */
     fun swapState(arr: List<Int>, x: Int, y: Int) {
         val indicesIndicators = Pair(listOf(x, y), ChartIndicatorType.SWAP)
 
         _chartStateList.add(ChartState(arr, indicesIndicators))
-        _logTracer.logSwap(_chartStateList.lastIndex, x, y)
+        _logTracer.logSwap(_chartStateList.lastIndex, arr[x], arr[y])
     }
 
     fun finalState(arr: List<Int>) {

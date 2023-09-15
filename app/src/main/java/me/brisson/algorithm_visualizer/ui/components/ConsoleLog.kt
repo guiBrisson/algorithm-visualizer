@@ -12,14 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -35,6 +36,8 @@ import me.brisson.algorithm_visualizer.algorithms.utils.ChartLogType
 import me.brisson.algorithm_visualizer.algorithms.utils.MessageLog
 import me.brisson.algorithm_visualizer.ui.theme.AlgorithmVisualizerTheme
 import me.brisson.algorithm_visualizer.ui.theme.consoleStyle
+import me.brisson.algorithm_visualizer.ui.theme.initialConsoleColor
+import me.brisson.algorithm_visualizer.ui.theme.swapColor
 
 enum class ConsoleLogState {
     EXPANDED, COLLAPSED
@@ -53,7 +56,6 @@ fun ConsoleLog(
         modifier = modifier
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.background)
-
             .padding(horizontal = 20.dp),
     ) {
         Row(
@@ -96,7 +98,6 @@ fun ConsoleLog(
             )
         }
 
-
         AnimatedVisibility(state == ConsoleLogState.EXPANDED) {
             LogMessages(
                 modifier = Modifier
@@ -115,17 +116,20 @@ internal fun LogMessages(
     modifier: Modifier = Modifier,
     logMessages: List<MessageLog>,
 ) {
+    val scrollState = rememberLazyListState()
+
+    LaunchedEffect(logMessages.size) {
+        scrollState.scrollToItem(logMessages.lastIndex)
+    }
+
     LazyColumn(
         modifier = modifier,
+        state = scrollState,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         itemsIndexed(logMessages) { index, logMessage ->
-            val bottomPaddingDp = if (index == logMessages.lastIndex) {
-                8.dp
-            } else {
-                0.dp
-            }
-            
+            val bottomPaddingDp = if (index == logMessages.lastIndex) 8.dp else 0.dp
+
             LogMessageItem(
                 modifier = Modifier.padding(bottom = bottomPaddingDp),
                 logMessage = logMessage,
@@ -140,9 +144,9 @@ internal fun LogMessageItem(
     logMessage: MessageLog,
 ) {
     val color: Color = when (logMessage.type) {
-        ChartLogType.INITIAL -> Color(0xFF5598C3)
-        ChartLogType.SWAP -> Color(0xFFC3C3C3)
-        ChartLogType.FINISH -> Color(0xFF90ED8E)
+        ChartLogType.INITIAL -> initialConsoleColor
+        ChartLogType.SWAP -> swapColor
+        ChartLogType.FINISH -> MaterialTheme.colorScheme.primary
     }
 
     Text(

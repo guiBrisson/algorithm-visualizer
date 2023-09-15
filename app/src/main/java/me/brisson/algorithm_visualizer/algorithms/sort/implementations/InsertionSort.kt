@@ -19,12 +19,12 @@ class InsertionSort: Sort() {
 
             while (j>=0 && key < arr[j]) {
                 arr[j+1] = arr[j]
-                chartTracer.swapState(arr.toList(), j + 1, arr[j + 1])
+                chartTracer.swapState(arr.toList(), j + 1, j)
                 j--
             }
 
             arr[j+1] = key
-            chartTracer.swapState(arr.toList(), j + 1, arr[i])
+            chartTracer.swapState(arr.toList(), j + 1, i)
         }
 
         chartTracer.finalState(arr.toList())

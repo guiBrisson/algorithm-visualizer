@@ -4,7 +4,7 @@ import me.brisson.algorithm_visualizer.algorithms.sort.utils.Sort
 import me.brisson.algorithm_visualizer.algorithms.utils.ChartTracer
 
 
-class QuickSort: Sort() {
+class QuickSort : Sort() {
     override val algorithmName: String = "Quick sort"
     override val chartTracer: ChartTracer = ChartTracer()
 
@@ -19,35 +19,41 @@ class QuickSort: Sort() {
         onFinish()
     }
 
-    private fun quickSort(arr: IntArray, left: Int, right: Int) {
-        var left = left
-        var l: Int
-        var r: Int
-        var s: Int
-        while (right > left) {
-            l = left
-            r = right
-            s = arr[left]
-            while (l < r) {
-                chartTracer.selectState(left, right)
-                while (arr[r] > s) {
-                    chartTracer.selectState(r)
-                    r--
-                }
-                arr[l] = arr[r]
-                chartTracer.swapState(arr.toList(), l, arr[r])
-                while (s >= arr[l] && l < r) {
-                    chartTracer.selectState(l)
-                    l++
-                }
-                arr[r] = arr[l]
-                chartTracer.swapState(arr.toList(), r, arr[l])
-            }
-            arr[l] = s
-            chartTracer.swapState(arr.toList(), l, s)
-            quickSort(arr, left, l - 1)
-            left = l + 1
+    private fun quickSort(array: IntArray, left: Int, right: Int) {
+        val index = partition(array, left, right)
+        if (left < index - 1) {
+            quickSort(array, left, index - 1)
         }
+        if (index < right) {
+            quickSort(array, index, right)
+        }
+    }
+
+    private fun partition(array: IntArray, l: Int, r: Int): Int {
+        var left = l
+        var right = r
+        val pivot = array[(left + right) / 2]
+        while (left <= right) {
+            chartTracer.selectState(left, right)
+            while (array[left] < pivot) left++
+
+            while (array[right] > pivot) right--
+            chartTracer.selectState(left, right)
+
+            if (left <= right) {
+                swapArray(array, left, right)
+                left++
+                right--
+            }
+        }
+        return left
+    }
+
+    private fun swapArray(arr: IntArray, b: Int, c: Int) {
+        val temp = arr[b]
+        arr[b] = arr[c]
+        arr[c] = temp
+        chartTracer.swapState(arr.toList(), b, c)
     }
 
 }

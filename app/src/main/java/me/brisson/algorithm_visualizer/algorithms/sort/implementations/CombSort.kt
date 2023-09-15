@@ -43,7 +43,6 @@ class CombSort : Sort() {
         val temp = array[x]
         array[x] = array[y]
         array[y] = temp
-
         chartTracer.swapState(array.toList(), x, y)
     }
 

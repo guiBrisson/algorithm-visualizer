@@ -23,6 +23,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import me.brisson.algorithm_visualizer.algorithms.utils.ChartIndicatorType
 import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
+import me.brisson.algorithm_visualizer.ui.theme.selectColor
+import me.brisson.algorithm_visualizer.ui.theme.swapColor
 
 @Composable
 fun BarIllustration(
@@ -41,8 +43,8 @@ fun BarIllustration(
                     chartState.indicesIndicators.first.contains(index)
                 ) {
                     when (chartState.indicesIndicators.second) {
-                        ChartIndicatorType.SELECT -> Color.Blue
-                        ChartIndicatorType.SWAP -> Color.Yellow
+                        ChartIndicatorType.SELECT -> selectColor
+                        ChartIndicatorType.SWAP -> swapColor
                     }
                 } else {
                     MaterialTheme.colorScheme.primary
