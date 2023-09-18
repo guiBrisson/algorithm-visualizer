@@ -18,7 +18,9 @@ class HomeViewModel: ViewModel() {
     private var _runNewValuesUpdate = true
 
     fun repeatUpdatingNewValues() = viewModelScope.launch {
+        _runNewValuesUpdate = true
         while (_runNewValuesUpdate) {
+            Log.d(TAG, "Updating new values")
             _uiState.update {
                 it.copy(sortingIntList = List(6) {
                     Random.nextInt(

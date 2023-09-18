@@ -47,6 +47,7 @@ fun HomeRoute(
     DisposableEffect(Unit) {
         onDispose { viewModel.clear() }
     }
+
     HomeScreen(
         modifier = modifier.fillMaxSize(),
         uiState = uiState,
