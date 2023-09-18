@@ -8,6 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import me.brisson.algorithm_visualizer.ui.screens.algorithm_info.AlgorithmInfoRoute
 import me.brisson.algorithm_visualizer.ui.screens.home.HomeRoute
 import me.brisson.algorithm_visualizer.ui.screens.sort_algorithms.SortAlgorithmsRoute
 import me.brisson.algorithm_visualizer.ui.screens.sorting.SortingRoute
@@ -36,12 +37,23 @@ fun AppNavigation(
         }
         composable(
             route = AppNavigationRoutes.SORTING_ROUTE,
-            arguments = listOf(navArgument(AppNavigationArgs.SORT_ALGORITHM_ID) {
+            arguments = listOf(navArgument(AppNavigationArgs.SORT_ALGORITHM_CLASS_NAME) {
                 type = NavType.StringType
             }),
         ) {
             SortingRoute(
+                onInfo = { AppDestinations(navController).navigateToAlgorithmInfo(it) },
                 onBack = { navController.navigateUp() },
+            )
+        }
+        composable(
+            route = AppNavigationRoutes.ALGORITHM_INFO_ROUTE,
+            arguments = listOf(navArgument(AppNavigationArgs.ALGORITHM_MD_RES_ID) {
+                type = NavType.IntType
+            }),
+        ) {
+            AlgorithmInfoRoute(
+                onBack = { navController.navigateUp() }
             )
         }
     }

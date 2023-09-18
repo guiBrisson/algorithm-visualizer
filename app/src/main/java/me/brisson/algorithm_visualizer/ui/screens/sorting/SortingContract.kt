@@ -3,10 +3,10 @@ package me.brisson.algorithm_visualizer.ui.screens.sorting
 import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 import me.brisson.algorithm_visualizer.algorithms.utils.MessageLog
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
-import kotlin.random.Random
 
 data class SortingUIState(
     val algorithmName: String = "",
+    val infoMdResId: Int? = null,
 
     // Visualizer
     val isVisualizerAvailable: Boolean = false,

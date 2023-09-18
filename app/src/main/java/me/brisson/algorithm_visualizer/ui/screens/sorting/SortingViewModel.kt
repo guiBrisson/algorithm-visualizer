@@ -15,15 +15,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import me.brisson.algorithm_visualizer.algorithms.sort.utils.Sort
+import me.brisson.algorithm_visualizer.algorithms.sort.utils.SortingAlgorithms
 import me.brisson.algorithm_visualizer.algorithms.utils.ChartState
 import me.brisson.algorithm_visualizer.algorithms.utils.MessageLog
 import me.brisson.algorithm_visualizer.navigation.AppNavigationArgs
 import me.brisson.algorithm_visualizer.ui.components.ConsoleLogState
 import kotlin.random.Random
 
-class SortingViewModel(savedStateHandle: SavedStateHandle, ) : ViewModel() {
+class SortingViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val _sortingClassName: String =
-        checkNotNull(savedStateHandle[AppNavigationArgs.SORT_ALGORITHM_ID])
+        checkNotNull(savedStateHandle[AppNavigationArgs.SORT_ALGORITHM_CLASS_NAME])
 
     private val sortClass: Sort? = Sort.instantiateClass(_sortingClassName)
 
@@ -48,6 +49,7 @@ class SortingViewModel(savedStateHandle: SavedStateHandle, ) : ViewModel() {
                     _uiState.update {
                         it.copy(
                             isVisualizerAvailable = true,
+                            consoleLogState = ConsoleLogState.EXPANDED,
                             algorithmName = clazz.algorithmName,
                             chartState = chartStateList.first(),
                             logMessages = logMessagesBasedOnIndex(0)
@@ -58,6 +60,21 @@ class SortingViewModel(savedStateHandle: SavedStateHandle, ) : ViewModel() {
 
         }
     }
+
+    fun updateInfoButtonAvailability() {
+        val enumAlgorithm = enumValues<SortingAlgorithms>().find {
+            it.algorithmClass.algorithmName == sortClass?.algorithmName
+        }
+
+        _uiState.update { it.copy(infoMdResId = enumAlgorithm?.mdResId) }
+    }
+
+//    fun getAlgorithmMdResId(): Int {
+//        val enumAlgorithm = enumValues<SortingAlgorithms>().find {
+//            it.algorithmClass.algorithmName == sortClass?.algorithmName
+//        }
+//        return enumAlgorithm?.mdResId ?: -1
+//    }
 
     fun onEvent(event: SortingEvents) {
         when (event) {

@@ -108,7 +108,7 @@ fun AlgorithmController(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             IconButton(onClick = onPrevious) {
                 Icon(

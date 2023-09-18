@@ -36,12 +36,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun SortingRoute(
     modifier: Modifier = Modifier,
     viewModel: SortingViewModel = viewModel(),
+    onInfo: (mdResId: Int) -> Unit,
     onBack: () -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
         viewModel.runSortingToPopulateArrayLevels()
+        viewModel.updateInfoButtonAvailability()
     }
 
     SortingScreen(
@@ -52,6 +54,7 @@ fun SortingRoute(
         onPrevious = { viewModel.onEvent(SortingEvents.Previous) },
         onNext = { viewModel.onEvent(SortingEvents.Next) },
         onSpeed = { viewModel.onEvent(SortingEvents.ChangeSpeed(it)) },
+        onInfo = onInfo,
         onBack = onBack,
     )
 }
@@ -65,6 +68,7 @@ internal fun SortingScreen(
     onPrevious: () -> Unit,
     onNext: () -> Unit,
     onSpeed: (Float) -> Unit,
+    onInfo: (mdResId: Int) -> Unit,
     onBack: () -> Unit,
 ) {
 
@@ -75,8 +79,13 @@ internal fun SortingScreen(
     ) {
         TopBar(
             sortAlgorithmName = uiState.algorithmName,
+            infoButtonEnabled = uiState.infoMdResId != null,
             onBack = onBack,
-            onInfo = { },
+            onInfo = {
+                if (uiState.infoMdResId != null) {
+                    onInfo(uiState.infoMdResId)
+                }
+            },
             onMore = { },
         )
 
@@ -109,6 +118,7 @@ internal fun SortingScreen(
 private fun TopBar(
     modifier: Modifier = Modifier,
     sortAlgorithmName: String,
+    infoButtonEnabled: Boolean = true,
     onBack: () -> Unit,
     onInfo: () -> Unit,
     onMore: () -> Unit,
@@ -137,13 +147,21 @@ private fun TopBar(
                 fontWeight = FontWeight.Medium,
             ),
         )
-        IconButton(onClick = onInfo) {
+
+        IconButton(onClick = onInfo, enabled = infoButtonEnabled) {
+            val tint = if (infoButtonEnabled) {
+                MaterialTheme.colorScheme.onBackground
+            } else {
+                MaterialTheme.colorScheme.onBackground.copy(alpha = 0.4f)
+            }
+
             Icon(
                 imageVector = Icons.Rounded.Info,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onBackground,
+                tint = tint
             )
         }
+
         IconButton(onClick = onMore) {
             Icon(
                 imageVector = Icons.Rounded.MoreVert,
@@ -170,6 +188,7 @@ private fun PreviewSortingScreen() {
             onPrevious = { },
             onNext = { },
             onSpeed = { },
+            onInfo = { },
             onBack = { },
         )
     }
