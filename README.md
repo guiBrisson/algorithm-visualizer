@@ -23,3 +23,7 @@ You can install Algorithm Visualizer by following these steps:
   ```
 2. Open the project in Android Studio.
 3. Build and run the app on your Android device or emulator.
+
+-- or -- 
+
+just **download** the [latest release](https://github.com/guiBrisson/algorithm-visualizer/releases) on your Android device.
