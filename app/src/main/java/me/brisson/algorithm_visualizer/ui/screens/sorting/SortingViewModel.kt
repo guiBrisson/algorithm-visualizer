@@ -26,7 +26,7 @@ class SortingViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
     private val _sortingClassName: String =
         checkNotNull(savedStateHandle[AppNavigationArgs.SORT_ALGORITHM_CLASS_NAME])
 
-    private val sortClass: Sort? = Sort.instantiateClass(_sortingClassName)
+    private var sortClass: Sort? = Sort.instantiateClass(_sortingClassName)
 
     private val _uiState = MutableStateFlow(SortingUIState())
     val uiState: StateFlow<SortingUIState> = _uiState.asStateFlow()
@@ -69,12 +69,13 @@ class SortingViewModel(savedStateHandle: SavedStateHandle) : ViewModel() {
         _uiState.update { it.copy(infoMdResId = enumAlgorithm?.mdResId) }
     }
 
-//    fun getAlgorithmMdResId(): Int {
-//        val enumAlgorithm = enumValues<SortingAlgorithms>().find {
-//            it.algorithmClass.algorithmName == sortClass?.algorithmName
-//        }
-//        return enumAlgorithm?.mdResId ?: -1
-//    }
+    fun resetAllValues() {
+        sortClass = Sort.instantiateClass(_sortingClassName)
+        chartStateList = emptyList()
+        messageLogList = emptyList()
+
+        _uiState.value = SortingUIState()
+    }
 
     fun onEvent(event: SortingEvents) {
         when (event) {
