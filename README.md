@@ -11,7 +11,7 @@ Design made by me 🤓 - [Figma link](https://www.figma.com/file/uUFp2SV1tB9KIEP
 ![Section 11](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/31cd9039-ee7f-411d-b9e5-025b4f265dd2)
 
 ### Demo
-[![Watch the video](https://i.stack.imgur.com/Vp2cE.png](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/d5dc612f-fafd-48ce-8784-03b2c83cc7dc))](https://youtu.be/vt5fpE0bzSY](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/c6e164f7-ed23-43bb-946d-56c47faf5754))
+[![Watch the video](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/d5dc612f-fafd-48ce-8784-03b2c83cc7dc)](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/5c75007e-5fae-407c-9fc3-19ec5bedc185)
 
 ### Installation
 
