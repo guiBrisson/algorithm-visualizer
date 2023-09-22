@@ -8,10 +8,10 @@ Algorithm Visualizer is an Android application that allows you to visualize sort
 
 Design made by me 🤓 - [Figma link](https://www.figma.com/file/uUFp2SV1tB9KIEPW3HwRzK/Algorithm-Visualizer?type=design&node-id=83%3A78&mode=design&t=aIhs2dM5Onn9DCst-1)
 
-![Section 11](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/31cd9039-ee7f-411d-b9e5-025b4f265dd2)
+![Section 11](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/35d1971f-4d48-4c1d-9d35-b5182303ca21)
 
 ### Demo
-[![Watch the video](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/d5dc612f-fafd-48ce-8784-03b2c83cc7dc)](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/5c75007e-5fae-407c-9fc3-19ec5bedc185)
+[![Watch the video](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/d0b4d29b-c4be-476a-8027-3c6c61a8da54)](https://github.com/guiBrisson/algorithm-visualizer/assets/54915600/c4b010b8-5354-4ffc-bec0-3cc95170ad41)
 
 ### Installation
 
